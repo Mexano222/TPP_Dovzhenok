@@ -32,4 +32,20 @@ public class CalculatorTest {
             throw new TestException("3*3 must be 9");
         }
     }
+
+    //---------------------------------------------------------------------------------------------
+    //Shouldn't be triggered with appropriate warning. Test modifier must be "public"
+    private void testNotPublic() throws TestException {
+        throw new TestException("modifier must be \"public\"");
+    }
+
+    //Shouldn't be triggered with appropriate warning. Test must not accept any arguments
+    public void testWithArguments(int n) throws TestException {
+        throw new TestException("must not accept any arguments");
+    }
+
+    //Shouldn't be triggered with appropriate warning. Test shouldn't return value
+    public int testNotVoid() throws TestException {
+        throw new TestException("shouldn't return value");
+    }
 }
