@@ -14,7 +14,7 @@ public class Select extends Function {
     public void call(Database db) {
         //SELECT * FROM table WHERE field = 'data'
         try {
-            ResultSet resultSet = db.execute("SELECT * FROM " + table + " WHERE " + fields.get(0) + " = '" + data.get(0) + "'");
+            ResultSet resultSet = db.executeQuery("SELECT * FROM " + table + " WHERE " + fields.get(0) + " = '" + data.get(0) + "'");
             for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
                 System.out.printf("%-17s", resultSet.getMetaData().getColumnName(i));
             }

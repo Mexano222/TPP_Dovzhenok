@@ -21,10 +21,17 @@ public class Database  {
         conn = getConnection(url);
     }
 
-    public ResultSet execute(String query) throws SQLException {
+    public ResultSet executeQuery(String query) throws SQLException {
         if(conn.isClosed())
             reconnect();
         Statement st = conn.createStatement();
         return st.executeQuery(query);
+    }
+
+    public void executeUpdate(String query) throws SQLException {
+        if(conn.isClosed())
+            reconnect();
+        Statement st = conn.createStatement();
+        st.executeUpdate(query);
     }
 }

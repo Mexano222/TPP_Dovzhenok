@@ -27,7 +27,7 @@ public class Runner {
         String table = sc.nextLine();
 
         if (Arrays.asList("Select", "Delete").contains(operation)) {// Let the user select a field to SELECT data by its content
-            runSelectDelete(db, operation, table);
+            runSelectDelete(db, operation, sc, table);
         } else if ("Update".equals(operation)) {// Let the user select a field to UPDATE data in it
             runUpdate(db, sc, table);
         } else if ("Insert".equals(operation)) {// Let the user select insert data
@@ -35,6 +35,8 @@ public class Runner {
         }
 
         sc.close();
+        if (!db.conn.isClosed())
+            db.conn.close();
     }
 
     private static void runInsert(Database db, Scanner sc, String table) {
@@ -56,8 +58,7 @@ public class Runner {
         new Update(table, field, data).call(db);
     }
 
-    private static void runSelectDelete(Database db, String operation, String table) {
-        Scanner sc = new Scanner(System.in);
+    private static void runSelectDelete(Database db, String operation, Scanner sc, String table) {
         System.out.println("Enter field to search by it:");
         String field = sc.nextLine();
         System.out.println("Enter data to find:");

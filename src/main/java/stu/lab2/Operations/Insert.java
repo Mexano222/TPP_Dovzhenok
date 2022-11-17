@@ -14,7 +14,7 @@ public class Insert extends Function {
     public void call(Database db) {
         //INSERT INTO table (field1, field2) VALUES (data1, data2)
         try {
-            db.execute("INSERT INTO " + table + "(" + String.join(", ", fields) + ") VALUES(" + String.join(", ", data) + ")");
+            db.executeUpdate("INSERT INTO " + table + "(" + String.join(", ", fields) + ") VALUES(" + String.join(", ", data) + ")");
             System.out.println("Inserted successfully");
         } catch (SQLException e) {
             System.out.println("[ERROR] " + e.getMessage());
