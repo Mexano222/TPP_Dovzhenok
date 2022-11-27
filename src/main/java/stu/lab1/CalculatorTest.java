@@ -25,7 +25,7 @@ public class CalculatorTest {
         }
     }
 
-    //Should fail with appropriate error because of a bug in dovzhenok.lab1.Calculator.multiply
+    //Should fail with appropriate error because of a bug in stu.lab1.Calculator.multiply
     public void testMultiply() throws TestException {
         int result = calculator.multiply(3, 3);
         if (result != 9) {
