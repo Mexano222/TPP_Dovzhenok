@@ -8,6 +8,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import jakarta.persistence.EntityManager;
 
 public class HibernateUtil {
+
     private static SessionFactory sessionFactory = null;
     private static EntityManager entityManager = null;
 
@@ -17,7 +18,7 @@ public class HibernateUtil {
                 .configure() // configures settings from hibernate.cfg.xml
                 .build();
         try {
-            SessionFactory sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+            sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
             return sessionFactory;
         } catch (Throwable e) {
             StandardServiceRegistryBuilder.destroy(registry);
@@ -34,9 +35,10 @@ public class HibernateUtil {
     }
 
     public static EntityManager getEntityManager() {
-        if (entityManager == null) {
-            entityManager = getSessionFactory().createEntityManager();
+        if (entityManager != null) {
+            entityManager.close();
         }
+        entityManager = getSessionFactory().createEntityManager();
         return entityManager;
     }
 

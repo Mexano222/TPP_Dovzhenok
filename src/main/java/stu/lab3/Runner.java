@@ -1,6 +1,5 @@
 package stu.lab3;
 
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
@@ -10,21 +9,20 @@ import stu.lab3.util.HibernateUtil;
 import stu.lab3.util.Menu;
 
 public class Runner {
-    public static Scanner sysIn = new Scanner(System.in);
 
     public static void main(String[] args) {
         // disables Hibernate Warn and Info messages
         LogManager.getLogManager().getLogger("").setLevel(Level.SEVERE);
+        //Initialize SessionFactory
         HibernateUtil.getSessionFactory();
         mainMenu();
         shutdown();
     }
 
-    // terminate session factory and entity manager, otherwise program won't end
+    // terminate session factory and entity manager to stop program properly
     public static void shutdown() {
         HibernateUtil.getEntityManager().close();
         HibernateUtil.getSessionFactory().close();
-        sysIn.close();
     }
 
     public static void mainMenu() {

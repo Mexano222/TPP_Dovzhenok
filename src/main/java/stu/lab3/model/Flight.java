@@ -12,20 +12,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import stu.lab3.Runner;
 import stu.lab3.database.InsertData;
 import stu.lab3.util.HibernateUtil;
 import stu.lab3.util.Menu;
 
 @Entity
-@Table(name = "flight", schema = "public", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "flight", schema = "public", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"id"})})
 public class Flight implements Serializable {
 
     @Id
@@ -44,9 +44,10 @@ public class Flight implements Serializable {
     @JoinColumn(name = "to_airport", nullable = false)
     private Airport toAirport;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(name = "flight_crew", joinColumns = { @JoinColumn(name = "flight_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "crew_id") })
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "flight_crew", joinColumns = {
+        @JoinColumn(name = "flight_id")}, inverseJoinColumns = {
+        @JoinColumn(name = "crew_id")})
     @OrderBy("id")
     Set<Crew> crews = new HashSet<>();
 
@@ -111,8 +112,7 @@ public class Flight implements Serializable {
     }
 
     public Flight create() {
-        System.out.println("\nEnter flight number:");
-        setNumber(Runner.sysIn.nextLine());
+        setNumber(Menu.takeSimpleInput("Enter flight number:"));
 
         // Get list of all airports
         List<Airport> airports = Airport.select();
@@ -132,15 +132,15 @@ public class Flight implements Serializable {
     }
 
     public Flight selectCrews() {
-        List<Crew> crews = Crew.select();
-        List<String> options = new ArrayList<String>();
-        crews.forEach(c -> options.add(c.getName()));
+        List<Crew> allCrews = Crew.select();
+        List<String> options = new ArrayList<>();
+        allCrews.forEach(c -> options.add(c.getName()));
 
         new Menu("Select crews from list:")
                 .setOptions(options).takeSelectInput()
-                .forEach(i -> addCrew(crews.get(i)));
+                .forEach(i -> addCrew(allCrews.get(i)));
 
-        System.out.println("Successfully selected crews " + toString());
+        System.out.println("Successfully selected crews for " + toString());
         return this;
     }
 }

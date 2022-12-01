@@ -14,13 +14,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import stu.lab3.Runner;
 import stu.lab3.database.InsertData;
 import stu.lab3.util.HibernateUtil;
 import stu.lab3.util.Menu;
 
 @Entity
-@Table(name = "airport", schema = "public", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "airport", schema = "public", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"id"})})
 public class Airport implements Serializable {
 
     @Id
@@ -83,23 +83,21 @@ public class Airport implements Serializable {
     }
 
     public Airport create() {
-        System.out.println("\nEnter airport name:");
-        setName(Runner.sysIn.nextLine());
-
-        System.out.println("\nEnter airport IATA code:");
-        setCode(Runner.sysIn.nextLine());
+        setName(Menu.takeSimpleInput("Enter airport name:"));
+        setCode(Menu.takeSimpleInput("Enter airport IATA code:"));
 
         // Get list of all cities
         List<City> cities = City.select();
-        List<String> options = new ArrayList<String>();
+        List<String> options = new ArrayList<>();
         cities.forEach(c -> options.add(c.getName()));
         options.add("Create new");
 
         int selected = new Menu("Select city from list:").setOptions(options).takeOneInput();
-        if (selected < options.size() - 1)
+        if (selected < options.size() - 1) {
             setCity(cities.get(selected));
-        else
+        } else {
             setCity(new City().create());
+        }
 
         InsertData.insertObject(this);
         System.out.println("Successfully created airport " + toString());

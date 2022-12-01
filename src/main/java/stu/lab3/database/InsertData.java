@@ -3,7 +3,10 @@ package stu.lab3.database;
 import org.hibernate.Session;
 
 import stu.lab3.Runner;
-import stu.lab3.model.*;
+import stu.lab3.model.Airport;
+import stu.lab3.model.City;
+import stu.lab3.model.Crew;
+import stu.lab3.model.Flight;
 import stu.lab3.util.HibernateUtil;
 import stu.lab3.util.Menu;
 
@@ -47,25 +50,25 @@ public class InsertData {
     }
 
     public static void insertObject(Object obj) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        // start transaction
-        session.beginTransaction();
-        // Save the Model object
-        session.persist(obj);
-        // commit transaction
-        session.getTransaction().commit();
-        session.close();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start transaction
+            session.beginTransaction();
+            // Save the Model object
+            session.persist(obj);
+            // commit transaction
+            session.getTransaction().commit();
+        }
     }
 
     private static void mergeObject(Object obj) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        // start transaction
-        session.beginTransaction();
-        // Save the Model object
-        session.merge(obj);
-        // commit transaction
-        session.getTransaction().commit();
-        session.close();
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // start transaction
+            session.beginTransaction();
+            // Save the Model object
+            session.merge(obj);
+            // commit transaction
+            session.getTransaction().commit();
+        }
     }
 
 }

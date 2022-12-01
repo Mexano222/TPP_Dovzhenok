@@ -13,12 +13,13 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import stu.lab3.Runner;
 import stu.lab3.database.InsertData;
 import stu.lab3.util.HibernateUtil;
+import stu.lab3.util.Menu;
 
 @Entity
-@Table(name = "city", schema = "public", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "city", schema = "public", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"id"})})
 public class City implements Serializable {
 
     @Id
@@ -69,8 +70,7 @@ public class City implements Serializable {
     }
 
     public City create() {
-        System.out.println("\nEnter city name:");
-        setName(Runner.sysIn.nextLine());
+        setName(Menu.takeSimpleInput("Enter city name:"));
 
         InsertData.insertObject(this);
         System.out.println("Successfully created city " + toString());

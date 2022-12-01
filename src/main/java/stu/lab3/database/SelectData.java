@@ -16,7 +16,6 @@ public class SelectData {
                 .addOption("Show cities", SelectData::showCities)
                 .addOption("Show crews", SelectData::showCrews)
                 .addOption("Show flights", SelectData::showFlights)
-
                 .addOption("Show cities with airports", SelectData::showCitiesAndAirports)
                 .addOption("Show flights with crews", SelectData::showFlightsAndCrews)
                 .addOption("Show flights with airports", SelectData::showFlightsAndAirports)
@@ -53,8 +52,9 @@ public class SelectData {
     private static void showCitiesAndAirports() {
         for (City city : City.select()) {
             System.out.println(city.toString());
-            for (Airport airport : city.getAirports())
+            for (Airport airport : city.getAirports()) {
                 System.out.println(" - " + airport.toString());
+            }
         }
         Runner.returnMenu();
     }
@@ -63,8 +63,9 @@ public class SelectData {
     private static void showFlightsAndCrews() {
         for (Flight flight : Flight.select()) {
             System.out.println(flight.toString());
-            for (Crew crew : flight.getCrews())
+            for (Crew crew : flight.getCrews()) {
                 System.out.println("\t" + crew.toString());
+            }
         }
         Runner.returnMenu();
     }

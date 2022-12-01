@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.IntStream;
-
-import stu.lab3.Runner;
 
 public class Menu {
 
@@ -44,6 +43,10 @@ public class Menu {
         return callbacks;
     }
 
+    public void setCallbacks(List<Runnable> callbacks) {
+        this.callbacks = callbacks;
+    }
+
     public Menu addOption(String str, Runnable method) {
         getOptions().add(str);
         getCallbacks().add(method);
@@ -66,45 +69,57 @@ public class Menu {
     }
 
     public Integer takeOneInput() {
+        Scanner cs = new Scanner(System.in);
         int option = 0;
         do {
             printOneMenu();
             try {
-                option = Runner.sysIn.nextInt();
+                option = cs.nextInt();
             } catch (InputMismatchException e) {
-                Runner.sysIn.next();
+                cs.next();
             }
         } while ((option < 1 || option > getOptions().size()));
-        if (!getCallbacks().isEmpty())
+        if (!getCallbacks().isEmpty()) {
             getCallbacks().get(option - 1).run();
+        }
         return option - 1;
     }
 
     public Set<Integer> takeSelectInput() {
+        Scanner cs = new Scanner(System.in);
         addOption("Confirm");
-        Set<Integer> selected = new HashSet<Integer>();
+        Set<Integer> selected = new HashSet<>();
         int option = 0;
         do {
             printSelectMenu(selected);
             try {
-                option = Runner.sysIn.nextInt();
+                option = cs.nextInt();
             } catch (InputMismatchException e) {
-                Runner.sysIn.next();
+                cs.next();
             }
             if (option > 0 && option < getOptions().size()) {
-                if (selected.contains(option - 1))
+                if (selected.contains(option - 1)) {
                     selected.remove(option - 1);
-                selected.add(option - 1);
+                } else {
+                    selected.add(option - 1);
+                }
             }
         } while (option != getOptions().size());
         return selected;
     }
 
+    public static String takeSimpleInput(String string) {
+        Scanner cs = new Scanner(System.in);
+        System.out.println("\n" + string);
+        return cs.nextLine();
+    }
+
     private void printOneMenu() {
         int separatorLen = Math.max(getOptions().stream().map(String::length).max(Integer::compareTo).get() + 3,
                 getTitle().length());
-        if (getTitle().length() > 0)
+        if (getTitle().length() > 0) {
             System.out.println("\n" + getTitle());
+        }
         System.out.println("-".repeat(separatorLen));
         IntStream.range(0, getOptions().size()).mapToObj(i -> (i + 1) + ". " + getOptions().get(i))
                 .forEach(System.out::println);
@@ -115,12 +130,13 @@ public class Menu {
     private void printSelectMenu(Set<Integer> selected) {
         int separatorLen = Math.max(getOptions().stream().map(String::length).max(Integer::compareTo).get() + 3,
                 getTitle().length());
-        if (getTitle().length() > 0)
+        if (getTitle().length() > 0) {
             System.out.println("\n" + getTitle());
+        }
         System.out.println("-".repeat(separatorLen));
 
         IntStream.range(0, getOptions().size())
-                .mapToObj(i -> (i + 1) + ". " + (selected.contains(i) ? "*" : "") + getOptions().get(i))
+                .mapToObj(i -> (i + 1) + ". " + (selected.contains(i) ? "=>" : "") + getOptions().get(i))
                 .forEach(System.out::println);
         System.out.println("-".repeat(separatorLen));
         System.out.println("Enter your choice:");

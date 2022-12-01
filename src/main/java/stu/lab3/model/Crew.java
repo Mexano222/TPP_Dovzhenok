@@ -15,13 +15,13 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import stu.lab3.Runner;
 import stu.lab3.database.InsertData;
 import stu.lab3.util.HibernateUtil;
 import stu.lab3.util.Menu;
 
 @Entity
-@Table(name = "crew", schema = "public", uniqueConstraints = { @UniqueConstraint(columnNames = { "id" }) })
+@Table(name = "crew", schema = "public", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"id"})})
 public class Crew implements Serializable {
 
     @Id
@@ -87,11 +87,8 @@ public class Crew implements Serializable {
     }
 
     public Crew create() {
-        System.out.println("\nEnter person name:");
-        setName(Runner.sysIn.nextLine());
-
-        System.out.println("\nEnter person job:");
-        setJob(Runner.sysIn.nextLine());
+        setName(Menu.takeSimpleInput("Enter person name:"));
+        setJob(Menu.takeSimpleInput("Enter person job:"));
 
         InsertData.insertObject(this);
         System.out.println("Successfully created crew " + toString());
@@ -99,15 +96,15 @@ public class Crew implements Serializable {
     }
 
     public Crew selectFlight() {
-        List<Flight> flights = Flight.select();
-        List<String> options = new ArrayList<String>();
-        flights.forEach(f -> options.add(f.getNumber()));
+        List<Flight> allFlights = Flight.select();
+        List<String> options = new ArrayList<>();
+        allFlights.forEach(f -> options.add(f.getNumber()));
 
         new Menu("Select flights from list:")
                 .setOptions(options).takeSelectInput()
-                .forEach(i -> addFlight(flights.get(i)));
+                .forEach(i -> addFlight(allFlights.get(i)));
 
-        System.out.println("Successfully selected crews " + toString());
+        System.out.println("Successfully selected flights for " + toString());
         return this;
     }
 }
