@@ -2,7 +2,7 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-!**/target/
+target/
 /.idea/
 *.iml
 
@@ -27,6 +27,7 @@ bin/
 
 ### VS Code ###
 .vscode/
+*.java~
 
 ### Mac OS ###
 .DS_Store
