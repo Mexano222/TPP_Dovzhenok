@@ -2,7 +2,6 @@ package stu.lab3.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,10 +12,16 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import stu.lab3.database.InsertData;
 import stu.lab3.util.HibernateUtil;
 import stu.lab3.util.Menu;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "city", schema = "public", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"id"})})
@@ -32,31 +37,7 @@ public class City implements Serializable {
 
     @OneToMany(mappedBy = "city")
     @OrderBy("id")
-    Set<Airport> airports;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<Airport> getAirports() {
-        return airports;
-    }
-
-    public void setAirports(Set<Airport> airports) {
-        this.airports = airports;
-    }
+    List<Airport> airports;
 
     @Override
     public String toString() {

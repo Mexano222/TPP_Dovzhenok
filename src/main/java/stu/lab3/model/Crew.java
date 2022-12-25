@@ -2,23 +2,29 @@ package stu.lab3.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import stu.lab3.database.InsertData;
 import stu.lab3.util.HibernateUtil;
 import stu.lab3.util.Menu;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "crew", schema = "public", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"id"})})
@@ -35,45 +41,12 @@ public class Crew implements Serializable {
     @Column(name = "job", nullable = false)
     private String job;
 
-    @ManyToMany(mappedBy = "crews")
+    @ManyToMany
+    @JoinTable(name = "flight_crew", joinColumns = {
+        @JoinColumn(name = "crew_id")}, inverseJoinColumns = {
+        @JoinColumn(name = "flight_id")})
     @OrderBy("id")
-    private Set<Flight> flights = new HashSet<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getJob() {
-        return job;
-    }
-
-    public void setJob(String job) {
-        this.job = job;
-    }
-
-    public Set<Flight> getFlights() {
-        return flights;
-    }
-
-    public void setFlights(Set<Flight> flights) {
-        this.flights = flights;
-    }
-
-    public void addFlight(Flight flight) {
-        this.flights.add(flight);
-    }
+    private List<Flight> flights = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -102,7 +75,7 @@ public class Crew implements Serializable {
 
         new Menu("Select flights from list:")
                 .setOptions(options).takeSelectInput()
-                .forEach(i -> addFlight(allFlights.get(i)));
+                .forEach(i -> getFlights().add(allFlights.get(i)));
 
         System.out.println("Successfully selected flights for " + toString());
         return this;

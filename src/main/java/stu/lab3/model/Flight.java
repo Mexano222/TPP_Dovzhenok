@@ -2,9 +2,7 @@ package stu.lab3.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,10 +17,16 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import stu.lab3.database.InsertData;
 import stu.lab3.util.HibernateUtil;
 import stu.lab3.util.Menu;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "flight", schema = "public", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"id"})})
@@ -49,51 +53,7 @@ public class Flight implements Serializable {
         @JoinColumn(name = "flight_id")}, inverseJoinColumns = {
         @JoinColumn(name = "crew_id")})
     @OrderBy("id")
-    Set<Crew> crews = new HashSet<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public Airport getFromAirport() {
-        return fromAirport;
-    }
-
-    public void setFromAirport(Airport fromAirport) {
-        this.fromAirport = fromAirport;
-    }
-
-    public Airport getToAirport() {
-        return toAirport;
-    }
-
-    public void setToAirport(Airport toAirport) {
-        this.toAirport = toAirport;
-    }
-
-    public Set<Crew> getCrews() {
-        return crews;
-    }
-
-    public void setCrews(Set<Crew> crews) {
-        this.crews = crews;
-    }
-
-    public void addCrew(Crew crew) {
-        this.crews.add(crew);
-    }
+    List<Crew> crews = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -138,7 +98,7 @@ public class Flight implements Serializable {
 
         new Menu("Select crews from list:")
                 .setOptions(options).takeSelectInput()
-                .forEach(i -> addCrew(allCrews.get(i)));
+                .forEach(i -> getCrews().add(allCrews.get(i)));
 
         System.out.println("Successfully selected crews for " + toString());
         return this;
