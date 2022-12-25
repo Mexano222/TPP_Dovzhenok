@@ -7,6 +7,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import jakarta.transaction.Transactional;
 import stu.lab4.model.Airport;
 import stu.lab4.model.City;
 import stu.lab4.model.Crew;
@@ -18,6 +19,7 @@ import stu.lab4.repo.FlightRepository;
 import stu.lab4.util.Menu;
 
 @Controller
+@Transactional
 public class InsertController {
 
     @Autowired
