@@ -1,8 +1,10 @@
-package stu.lab4.model;
+package stu.lab5.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -38,26 +40,19 @@ public class Flight implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "from_airport", nullable = false)
+    @JsonIgnoreProperties("city")
     private Airport fromAirport;
 
     @ManyToOne
     @JoinColumn(name = "to_airport", nullable = false)
+    @JsonIgnoreProperties("city")
     private Airport toAirport;
 
     @ManyToMany(targetEntity = Crew.class, cascade = CascadeType.ALL)
     @JoinTable(name = "flight_crew", joinColumns = @JoinColumn(name = "flight_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "crew_id", referencedColumnName = "id"))
     @OrderBy("id")
-    private List<Crew> crews = new ArrayList<>();
-
-    @Override
-    public String toString() {
-        return "[" + getId() + "] "
-                + getNumber() + " - "
-                + getFromAirport().getCity().getName() + "("
-                + getFromAirport().getCode() + ") => "
-                + getToAirport().getCity().getName() + "("
-                + getToAirport().getCode() + ")";
-    }
+    @JsonIgnore
+    private List<Crew> crews;
 
 }

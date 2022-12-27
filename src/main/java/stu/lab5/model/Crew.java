@@ -1,8 +1,9 @@
-package stu.lab4.model;
+package stu.lab5.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -39,11 +40,7 @@ public class Crew implements Serializable {
     @JoinTable(name = "flight_crew", joinColumns = @JoinColumn(name = "crew_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "flight_id", referencedColumnName = "id"))
     @OrderBy("id")
-    private List<Flight> flights = new ArrayList<>();
-
-    @Override
-    public String toString() {
-        return "[" + getId() + "] " + getName() + " (" + getJob() + ")";
-    }
+    @JsonIgnore
+    private List<Flight> flights;
 
 }

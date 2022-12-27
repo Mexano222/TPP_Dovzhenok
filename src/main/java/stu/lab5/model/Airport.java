@@ -1,4 +1,4 @@
-package stu.lab4.model;
+package stu.lab5.model;
 
 import java.io.Serializable;
 
@@ -37,10 +37,5 @@ public class Airport implements Serializable {
     @JoinColumn(name = "city", nullable = false)
     @OrderBy("id")
     private City city;
-
-    @Override
-    public String toString() {
-        return "[" + getId() + "] " + getName() + " (" + getCode() + ")";
-    }
 
 }

@@ -1,7 +1,9 @@
-package stu.lab4.model;
+package stu.lab5.model;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,11 +33,7 @@ public class City implements Serializable {
 
     @OneToMany(mappedBy = "city")
     @OrderBy("id")
+    @JsonIgnore
     List<Airport> airports;
-
-    @Override
-    public String toString() {
-        return "[" + getId() + "] " + getName();
-    }
 
 }
